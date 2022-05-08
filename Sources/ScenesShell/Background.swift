@@ -98,7 +98,7 @@ class Background: RenderableEntity,KeyDownHandler
             let text = Text(location:Point(x:x,y:y),text:"<!")
             text.font = "30pt Arial bold"
             canvas.render(text)
-            x += 40
+            x += 45
             for _ in 0 ..< 10
             {
                 //Draw the empty blank.
