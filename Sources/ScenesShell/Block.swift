@@ -71,17 +71,21 @@ class Block: RenderableEntity,KeyDownHandler
         {
             drawMainScreen = false
         }
-        if key == "ArrowDown"
+        if key == "ArrowDown" && y + 60 < 700
         {
             y += 30
         }
-        if key == "ArrowLeft" && x - 30 > canvasWidth / 2
+        if y + 30 < 700
         {
-            x -= 30
-        }
-        if key == "ArrowRight" && x + 30 < canvasWidth / 2 + 240
-        {
-            x += 30
+            print(key)
+            if key == "ArrowLeft" && x - 30 > canvasWidth / 2
+            {
+                x -= 30
+            }
+            if key == "ArrowRight" && x + 30 < canvasWidth / 2 + 240
+            {
+                x += 30
+            }
         }
     }
 }
