@@ -88,33 +88,19 @@ class Background: RenderableEntity,KeyDownHandler
     func drawBoard(canvas:Canvas)
     {
         //Render the color filling the text.
-        canvas.render(FillStyle(color:Color(red:100,green:92,blue:103)))
-        var y = 100
-        //Draw Board with text to move the Tetris Block with coordinates.
-        for _ in 0 ..< 20
+        let grayFillStyle = FillStyle(color:Color(red:100,green:92,blue:103))//FillStyle(color:Color(.gray))
+        let blackStrokeStyle = StrokeStyle(color:Color(.black))
+        let lineWidth = LineWidth(width:3)
+        let rect1 = Rectangle(rect:Rect(topLeft:Point(x:canvasWidth / 2,y:100),size:Size(width:360,height:630)),fillMode:.fillAndStroke)
+        canvas.render(grayFillStyle,blackStrokeStyle,lineWidth,rect1)
+        let silverFillStyle = FillStyle(color:Color(.silver))
+        for y in 0 ..< 20
         {
-            var x = canvasWidth / 2
-            //Draw the left slide.
-            let text = Text(location:Point(x:x,y:y),text:"<!")
-            text.font = "30pt Arial bold"
-            canvas.render(text)
-            x += 45
-            for _ in 0 ..< 10
+            for x in 0 ..< 10
             {
-                //Draw the empty blank.
-                text.location = Point(x:x,y:y)
-                text.text = "o"
-                canvas.render(text)
-                x += 30
+                let rect2 = Rectangle(rect:Rect(topLeft:Point(x:canvasWidth / 2 + 30 + x * 30,y:100 + y * 30),size:Size(width:30,height:30)),fillMode:.fillAndStroke)
+                canvas.render(silverFillStyle,rect2)
             }
-            //Draw the right slide.
-            text.location = Point(x:x,y:y)
-            text.text = "!>"
-            canvas.render(text)
-            y += 30
         }
-        //Draw the bottom slide.
-        let lastText = Text(location:Point(x:canvasWidth / 2,y:y),text:"- - - - - - - - - - - - -")
-        canvas.render(lastText)
     }
 }
