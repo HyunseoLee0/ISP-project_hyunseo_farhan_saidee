@@ -30,13 +30,16 @@ class Block: RenderableEntity,KeyDownHandler
     {
         canvasWidth = canvasSize.width
         canvasHeight = canvasSize.height
-        if !drawMainScreen
+        if !drawMainScreen && !lockBlock.isBottom(x:x,y:y)
         {
-            if ((blockKind == "I" || blockKind == "First") && y + 30 >= 700) || (blockKind != "I" && blockKind != "First" && y + 60 >= 700)
+            if blockKind == "First" && y + 30 >= 700
             {
                 endBlock = true
             }
-            
+            if (blockKind == "I" && lockBlock.isBottom(x:x,y:y + 30)) || (blockKind != "I" && lockBlock.isBottom(x:x,y:y + 60))
+            {
+                endBlock = true
+            }
             if blockKind == "First" && endBlock && y - 30 > 0
             {
                 y -= 30
@@ -44,7 +47,7 @@ class Block: RenderableEntity,KeyDownHandler
             else if count > 0
             {
                 count -= 1
-                if count == 0 && (((blockKind == "I" || blockKind == "First") && y + 30 < 700) || (blockKind != "I" && blockKind != "First" && y + 60 < 700))
+                if count == 0 && (((blockKind == "I" || blockKind == "First") && !lockBlock.isBottom(x:x,y:y + 30)) || (blockKind != "I" && blockKind != "First" && !lockBlock.isBottom(x:x,y:y + 60)))
                 {
                     y += 30
                     count = 20
@@ -77,7 +80,7 @@ class Block: RenderableEntity,KeyDownHandler
                 canvas.render(Rectangle(rect:Rect(topLeft:Point(x:canvasWidth / 2 - 10,y:y - 630),size:Size(width:400,height:630)),fillMode:.fill))
                 if y < 30
                 {
-                    endBlock()
+                    endBlocks()
                 }
             }
             if blockKind == "I"
@@ -94,7 +97,7 @@ class Block: RenderableEntity,KeyDownHandler
                     x += side
                 }
                 x -= side * 4
-                endBlock()
+                endBlocks()
             }
             if blockKind == "J"
             {
@@ -118,11 +121,11 @@ class Block: RenderableEntity,KeyDownHandler
                 }
                 x -= side * 3
                 y -= 30
-                endBlock()
+                endBlocks()
             }
         }
     }
-    func endBlock()
+    func endBlocks()
     {
         if endBlock
         {
@@ -141,25 +144,28 @@ class Block: RenderableEntity,KeyDownHandler
             drawMainScreen = false
             down = true
         }
-        if key == "ArrowDown" && y + 60 < 700
+        if blockKind != "First"
         {
-            y += 30
-        }
-        if y + 30 < 700
-        {
-            if code == "Space" && y + 60 < 700
+            if key == "ArrowDown" && y + 60 < 700
             {
-                down = true
+                y += 30
             }
-            if key == "ArrowLeft" && x - 30 > canvasWidth / 2
+            if y + 30 < 700
             {
-                x -= 30
-            }
-            if key == "ArrowRight"
-            {
-                if (blockKind == "I" && x + 30 < canvasWidth / 2 + 240) || (blockKind != "I" && x + 30 < canvasWidth / 2 + 270)
+                if code == "Space" && y + 60 < 700
                 {
-                    x += 30
+                    down = true
+                }
+                if key == "ArrowLeft" && x - 30 > canvasWidth / 2
+                {
+                    x -= 30
+                }
+                if key == "ArrowRight"
+                {
+                    if (blockKind == "I" && x + 30 < canvasWidth / 2 + 240) || (blockKind != "I" && x + 30 < canvasWidth / 2 + 270)
+                    {
+                        x += 30
+                    }
                 }
             }
         }

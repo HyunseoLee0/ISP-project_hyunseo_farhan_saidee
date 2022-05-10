@@ -63,7 +63,7 @@ class Background: RenderableEntity,KeyDownHandler
             //Render Background.
             canvas.render(FillStyle(color:Color(red:28,green:26,blue:14)),Rectangle(rect:Rect(topLeft:Point(x:0,y:0),size:Size(width:canvasWidth,height:canvasHeight)),fillMode:.fill))
             //Render Texts of "tetris", Score, and Full lines.
-            let tetrisText = Text(location:Point(x:0,y:150),text:"TETRIS")
+/*****            let tetrisText = Text(location:Point(x:0,y:150),text:"TETRIS")
             tetrisText.font = "150pt Arial Bold"
             canvas.render(FillStyle(color:Color(red:100,green:92,blue:103)),tetrisText)
             let textList = ["SCORE: \(score)","FULL LINES: \(fullLines)"]
@@ -74,7 +74,7 @@ class Background: RenderableEntity,KeyDownHandler
                 text.font = "35pt Arial Bold"
                 canvas.render(text)
                 y += 50
-            }
+            }*****/
             //Draw the tetris board.
             drawBoard(canvas:canvas)
         }
