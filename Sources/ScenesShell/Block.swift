@@ -6,7 +6,7 @@ class Block: RenderableEntity,KeyDownHandler
     var canvasWidth = 1916
     var canvasHeight = 973
     var blockKind = "First"
-    var blocks = ["L","J"]
+    var blocks = ["I","J"]
     var x: Int
     var y: Int
     let aquaColor = Color(red:0,green:255,blue:255)
@@ -32,10 +32,11 @@ class Block: RenderableEntity,KeyDownHandler
         canvasHeight = canvasSize.height
         if !drawMainScreen
         {
-            if ((blockKind == "L" || blockKind == "First") && y + 30 >= 700) || (blockKind != "L" && blockKind != "First" && y + 60 >= 700)
+            if ((blockKind == "I" || blockKind == "First") && y + 30 >= 700) || (blockKind != "I" && blockKind != "First" && y + 60 >= 700)
             {
                 endBlock = true
             }
+            
             if blockKind == "First" && endBlock && y - 30 > 0
             {
                 y -= 30
@@ -43,7 +44,7 @@ class Block: RenderableEntity,KeyDownHandler
             else if count > 0
             {
                 count -= 1
-                if count == 0 && (((blockKind == "L" || blockKind == "First") && y + 30 < 700) || (blockKind != "L" && blockKind != "First" && y + 60 < 700))
+                if count == 0 && (((blockKind == "I" || blockKind == "First") && y + 30 < 700) || (blockKind != "I" && blockKind != "First" && y + 60 < 700))
                 {
                     y += 30
                     count = 20
@@ -82,7 +83,7 @@ class Block: RenderableEntity,KeyDownHandler
                     blockKind = blocks.randomElement()!
                 }
             }
-            if blockKind == "L"
+            if blockKind == "I"
             {
                 for _ in 0 ..< 4
                 {
@@ -166,7 +167,7 @@ class Block: RenderableEntity,KeyDownHandler
             }
             if key == "ArrowRight"
             {
-                if (blockKind == "L" && x + 30 < canvasWidth / 2 + 240) || (blockKind != "L" && x + 30 < canvasWidth / 2 + 270)
+                if (blockKind == "I" && x + 30 < canvasWidth / 2 + 240) || (blockKind != "I" && x + 30 < canvasWidth / 2 + 270)
                 {
                     x += 30
                 }
