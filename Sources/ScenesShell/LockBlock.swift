@@ -50,6 +50,18 @@ class LockBlock: RenderableEntity,KeyDownHandler
             theEndText.location = Point(x:0,y:canvasHeight / 2 + canvasHeight / 3)
             theEndText.text = "OVER"
             canvas.render(theEndText)
+            let descriptionText = Text(location:Point(x:canvasWidth / 5 * 3 + 50,y:canvasHeight / 2 - canvasHeight / 12),text:"To start the")
+            descriptionText.font = "\(canvasHeight / 12)pt Arial Bold"
+            canvas.render(descriptionText)
+            descriptionText.location = Point(x:canvasWidth / 5 * 3 + 50,y:canvasHeight / 2)
+            descriptionText.text = "Game again,"
+            canvas.render(descriptionText)
+            descriptionText.location = Point(x:canvasWidth / 5 * 3 + 50,y:canvasHeight / 2 + canvasHeight / 12)
+            descriptionText.text = "Press the"
+            canvas.render(descriptionText)
+            descriptionText.location = Point(x:canvasWidth / 5 * 3 + 50,y:canvasHeight / 2 + canvasHeight / 6)
+            descriptionText.text = "Control-Space"
+            canvas.render(descriptionText)
         }
     }
     override func calculate(canvasSize:Size)
@@ -100,6 +112,16 @@ class LockBlock: RenderableEntity,KeyDownHandler
         if drawMainScreen
         {
             drawMainScreen = false
+        }
+        if !drawMainScreen && code == "Space" && ctrlKey
+        {
+            drawMainScreen = true
+            fillStyles = []
+            strokeStyles = []
+            rectangles = []
+            score = 0
+            fullLines = 0
+            theEnd = false
         }
     }
 }

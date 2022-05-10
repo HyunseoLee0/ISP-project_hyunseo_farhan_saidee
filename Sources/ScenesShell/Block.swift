@@ -144,6 +144,16 @@ class Block: RenderableEntity,KeyDownHandler
             drawMainScreen = false
             down = true
         }
+        if !drawMainScreen && code == "Space" && ctrlKey
+        {
+            drawMainScreen = true
+            blockKind = "First"
+            x = canvasWidth / 2 + 30
+            y = 100
+            count = 1
+            down = false
+            endBlock = false
+        }
         if blockKind != "First"
         {
             if key == "ArrowDown" && y + 60 < 700

@@ -13,8 +13,6 @@ class Background: RenderableEntity,KeyDownHandler
     var canvasWidth = 1916
     var canvasHeight = 973
     var drawMainScreen = true
-    var score = 0
-    var fullLines = 0
     init()
     {
         //Call the image through the URL of Tetris Main Screen
@@ -46,6 +44,10 @@ class Background: RenderableEntity,KeyDownHandler
         {
             drawMainScreen = false
         }
+        if !drawMainScreen && code == "Space" && ctrlKey
+        {
+            drawMainScreen = true
+        }
     }
     override func render(canvas:Canvas)
     {
@@ -62,19 +64,6 @@ class Background: RenderableEntity,KeyDownHandler
         {
             //Render Background.
             canvas.render(FillStyle(color:Color(red:28,green:26,blue:14)),Rectangle(rect:Rect(topLeft:Point(x:0,y:0),size:Size(width:canvasWidth,height:canvasHeight)),fillMode:.fill))
-            //Render Texts of "tetris", Score, and Full lines.
-/*****            let tetrisText = Text(location:Point(x:0,y:150),text:"TETRIS")
-            tetrisText.font = "150pt Arial Bold"
-            canvas.render(FillStyle(color:Color(red:100,green:92,blue:103)),tetrisText)
-            let textList = ["SCORE: \(score)","FULL LINES: \(fullLines)"]
-            var y = 200
-            for message in textList
-            {
-                let text = Text(location:Point(x:0,y:y),text:message)
-                text.font = "35pt Arial Bold"
-                canvas.render(text)
-                y += 50
-            }*****/
             //Draw the tetris board.
             drawBoard(canvas:canvas)
         }
