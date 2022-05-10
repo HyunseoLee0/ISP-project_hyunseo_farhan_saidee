@@ -43,11 +43,11 @@ class LockBlock: RenderableEntity,KeyDownHandler
         strokeStyles.append(strokeStyle)
         rectangles.append(rectangle)
     }
-    func isBottom(y:Int) -> Bool
+    func isBottom(x:Int,y:Int) -> Bool
     {
         for rectangle in rectangles
         {
-            if y >= rectangle.rect.topLeft.y
+            if x == rectangle.rect.topLeft.x && y >= rectangle.rect.topLeft.y
             {
                 return true
             }

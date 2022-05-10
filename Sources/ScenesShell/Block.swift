@@ -66,6 +66,8 @@ class Block: RenderableEntity,KeyDownHandler
     }
     func drawBlock(canvas:Canvas)
     {
+        let strokeStyle = StrokeStyle(color:Color(.black))
+        let lineWidth = LineWidth(width:3)
         if !drawMainScreen
         {
             let side = 30
@@ -75,12 +77,7 @@ class Block: RenderableEntity,KeyDownHandler
                 canvas.render(Rectangle(rect:Rect(topLeft:Point(x:canvasWidth / 2 - 10,y:y - 630),size:Size(width:400,height:630)),fillMode:.fill))
                 if y < 30
                 {
-                    down = false
-                    count = 20
-                    x = canvasWidth / 2 + 30
-                    y = 100
-                    endBlock = false
-                    blockKind = blocks.randomElement()!
+                    endBlock()
                 }
             }
             if blockKind == "I"
@@ -88,35 +85,25 @@ class Block: RenderableEntity,KeyDownHandler
                 for _ in 0 ..< 4
                 {
                     let fillStyle = FillStyle(color:aquaColor)
-                    canvas.render(fillStyle,StrokeStyle(color:Color(.black)),LineWidth(width:3))
                     let rectangle = Rectangle(rect:Rect(topLeft:Point(x:x,y:y),size:Size(width:side,height:side)),fillMode:.fillAndStroke)
-                    canvas.render(rectangle)
+                    canvas.render(fillStyle,strokeStyle,lineWidth,rectangle)
                     if endBlock
                     {
-                        lockBlock.addRectangle(fillStyle:FillStyle(color:aquaColor),strokeStyle:StrokeStyle(color:Color(.black)),rectangle:rectangle)
+                        lockBlock.addRectangle(fillStyle:fillStyle,strokeStyle:strokeStyle,rectangle:rectangle)
                     }
                     x += side
                 }
                 x -= side * 4
-                if endBlock
-                {
-                    down = false
-                    count = 20
-                    x = canvasWidth / 2 + 30
-                    y = 100
-                    endBlock = false
-                    blockKind = blocks.randomElement()!
-                }
+                endBlock()
             }
             if blockKind == "J"
             {
-                canvas.render(FillStyle(color:Color(.blue)),StrokeStyle(color:Color(.black)),LineWidth(width:3))
+                let fillStyle = FillStyle(color:Color(.blue))
                 let rectangle1 = Rectangle(rect:Rect(topLeft:Point(x:x,y:y),size:Size(width:side,height:side)),fillMode:.fillAndStroke)
-                canvas.render(rectangle1)
+                canvas.render(fillStyle,strokeStyle,lineWidth,rectangle1)
                 if endBlock
                 {
-                    let lockBlock = LockBlock()
-//                    lockBlock.setRectangle(rectangle:rectangle1)
+                    lockBlock.addRectangle(fillStyle:fillStyle,strokeStyle:strokeStyle,rectangle:rectangle1)
                 }
                 y += 30
                 for _ in 0 ..< 3
@@ -125,23 +112,26 @@ class Block: RenderableEntity,KeyDownHandler
                     canvas.render(rectangle2)
                     if endBlock
                     {
-                        let lockBlock = LockBlock()
-//                        lockBlock.setRectangle(rectangle:rectangle2)
+                        lockBlock.addRectangle(fillStyle:fillStyle,strokeStyle:strokeStyle,rectangle:rectangle2)
                     }
                     x += side
                 }
                 x -= side * 3
                 y -= 30
-                if endBlock
-                {
-                    down = false
-                    count = 20
-                    x = canvasWidth / 2 + 30
-                    y = 100
-                    endBlock = false
-                    blockKind = blocks.randomElement()!
-                }
+                endBlock()
             }
+        }
+    }
+    func endBlock()
+    {
+        if endBlock
+        {
+            down = false
+            count = 20
+            x = canvasWidth / 2 + 30
+            y = 100
+            endBlock = false
+            blockKind = blocks.randomElement()!
         }
     }
     func onKeyDown(key:String,code:String,ctrlKey:Bool,shiftKey:Bool,altKey:Bool,metaKey:Bool)
