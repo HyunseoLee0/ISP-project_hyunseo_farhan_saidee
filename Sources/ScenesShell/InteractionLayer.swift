@@ -9,7 +9,7 @@ import Scenes
 
 class InteractionLayer: Layer,KeyDownHandler
 {
-    let block = Block(blockKind:"L")
+    let block = Block()
     var canvasWidth = 1916
     var canvasHeight = 973
     init()
@@ -18,6 +18,7 @@ class InteractionLayer: Layer,KeyDownHandler
         super.init(name:"Interaction")
         // We insert our RenderableEntities in the constructor
         insert(entity:block,at:.front)
+        insert(entity:block.lockBlock,at:.front)
     }
     override func preSetup(canvasSize:Size,canvas:Canvas)
     {

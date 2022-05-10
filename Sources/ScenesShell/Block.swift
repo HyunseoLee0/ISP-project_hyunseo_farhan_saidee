@@ -5,16 +5,19 @@ class Block: RenderableEntity,KeyDownHandler
 {
     var canvasWidth = 1916
     var canvasHeight = 973
-    var blockKind = "L"
+    var blockKind = "First"
+    var blocks = ["L","J"]
     var x: Int
     var y: Int
     let aquaColor = Color(red:0,green:255,blue:255)
     var drawMainScreen = true
-    var count = 20
-    init(blockKind:String)
+    var count = 1
+    var down = false
+    var endBlock = false
+    let lockBlock = LockBlock()
+    init()
     {
-        self.blockKind = blockKind
-        self.x = canvasWidth / 2 + 21
+        self.x = canvasWidth / 2 + 30
         self.y = 100
         // Using a meaningful name can be helpful for debugging
         super.init(name:"Button")
@@ -29,13 +32,25 @@ class Block: RenderableEntity,KeyDownHandler
         canvasHeight = canvasSize.height
         if !drawMainScreen
         {
-            if count > 0
+            if ((blockKind == "L" || blockKind == "First") && y + 30 >= 700) || (blockKind != "L" && blockKind != "First" && y + 60 >= 700)
+            {
+                endBlock = true
+            }
+            if blockKind == "First" && endBlock && y - 30 > 0
+            {
+                y -= 30
+            }
+            else if count > 0
             {
                 count -= 1
-                if count == 0 && y + 60 <= 700
+                if count == 0 && (((blockKind == "L" || blockKind == "First") && y + 30 < 700) || (blockKind != "L" && blockKind != "First" && y + 60 < 700))
                 {
                     y += 30
                     count = 20
+                    if down
+                    {
+                        count = 1
+                    }
                 }
             }
         }
@@ -51,17 +66,80 @@ class Block: RenderableEntity,KeyDownHandler
     func drawBlock(canvas:Canvas)
     {
         if !drawMainScreen
-        {            
+        {
+            let side = 30
+            if blockKind == "First"
+            {
+                canvas.render(FillStyle(color:Color(red:28,green:26,blue:14)))
+                canvas.render(Rectangle(rect:Rect(topLeft:Point(x:canvasWidth / 2 - 10,y:y - 630),size:Size(width:400,height:630)),fillMode:.fill))
+                if y < 30
+                {
+                    down = false
+                    count = 20
+                    x = canvasWidth / 2 + 30
+                    y = 100
+                    endBlock = false
+                    blockKind = blocks.randomElement()!
+                }
+            }
             if blockKind == "L"
             {
-                let side = 30
                 for _ in 0 ..< 4
                 {
-                    canvas.render(FillStyle(color:aquaColor),StrokeStyle(color:Color(.black)),LineWidth(width:3))
-                    canvas.render(Rectangle(rect:Rect(topLeft:Point(x:x,y:y),size:Size(width:side,height:side)),fillMode:.fillAndStroke))
+                    let fillStyle = FillStyle(color:aquaColor)
+                    canvas.render(fillStyle,StrokeStyle(color:Color(.black)),LineWidth(width:3))
+                    let rectangle = Rectangle(rect:Rect(topLeft:Point(x:x,y:y),size:Size(width:side,height:side)),fillMode:.fillAndStroke)
+                    canvas.render(rectangle)
+                    if endBlock
+                    {
+                        lockBlock.addRectangle(fillStyle:FillStyle(color:aquaColor),strokeStyle:StrokeStyle(color:Color(.black)),rectangle:rectangle)
+                    }
                     x += side
                 }
                 x -= side * 4
+                if endBlock
+                {
+                    down = false
+                    count = 20
+                    x = canvasWidth / 2 + 30
+                    y = 100
+                    endBlock = false
+                    blockKind = blocks.randomElement()!
+                }
+            }
+            if blockKind == "J"
+            {
+                canvas.render(FillStyle(color:Color(.blue)),StrokeStyle(color:Color(.black)),LineWidth(width:3))
+                let rectangle1 = Rectangle(rect:Rect(topLeft:Point(x:x,y:y),size:Size(width:side,height:side)),fillMode:.fillAndStroke)
+                canvas.render(rectangle1)
+                if endBlock
+                {
+                    let lockBlock = LockBlock()
+//                    lockBlock.setRectangle(rectangle:rectangle1)
+                }
+                y += 30
+                for _ in 0 ..< 3
+                {
+                    let rectangle2 = Rectangle(rect:Rect(topLeft:Point(x:x,y:y),size:Size(width:side,height:side)),fillMode:.fillAndStroke)
+                    canvas.render(rectangle2)
+                    if endBlock
+                    {
+                        let lockBlock = LockBlock()
+//                        lockBlock.setRectangle(rectangle:rectangle2)
+                    }
+                    x += side
+                }
+                x -= side * 3
+                y -= 30
+                if endBlock
+                {
+                    down = false
+                    count = 20
+                    x = canvasWidth / 2 + 30
+                    y = 100
+                    endBlock = false
+                    blockKind = blocks.randomElement()!
+                }
             }
         }
     }
@@ -70,6 +148,7 @@ class Block: RenderableEntity,KeyDownHandler
         if drawMainScreen
         {
             drawMainScreen = false
+            down = true
         }
         if key == "ArrowDown" && y + 60 < 700
         {
@@ -77,14 +156,20 @@ class Block: RenderableEntity,KeyDownHandler
         }
         if y + 30 < 700
         {
-            print(key)
+            if code == "Space" && y + 60 < 700
+            {
+                down = true
+            }
             if key == "ArrowLeft" && x - 30 > canvasWidth / 2
             {
                 x -= 30
             }
-            if key == "ArrowRight" && x + 30 < canvasWidth / 2 + 240
+            if key == "ArrowRight"
             {
-                x += 30
+                if (blockKind == "L" && x + 30 < canvasWidth / 2 + 240) || (blockKind != "L" && x + 30 < canvasWidth / 2 + 270)
+                {
+                    x += 30
+                }
             }
         }
     }
