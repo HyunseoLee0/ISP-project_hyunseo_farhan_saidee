@@ -44,6 +44,7 @@ class Background: RenderableEntity,KeyDownHandler
         {
             drawMainScreen = false
         }
+        //When we press control-space during the game, restart the game with drawing the main screen.
         if !drawMainScreen && code == "Space" && ctrlKey
         {
             drawMainScreen = true
@@ -76,18 +77,18 @@ class Background: RenderableEntity,KeyDownHandler
     }
     func drawBoard(canvas:Canvas)
     {
-        //Render the color filling the text.
-        let grayFillStyle = FillStyle(color:Color(red:100,green:92,blue:103))//FillStyle(color:Color(.gray))
+        //Draw the game board with drawing the 20x10 rectangles through for loop.
+        let grayFillStyle = FillStyle(color:Color(red:100,green:92,blue:103))
         let blackStrokeStyle = StrokeStyle(color:Color(.black))
         let lineWidth = LineWidth(width:3)
-        let rect1 = Rectangle(rect:Rect(topLeft:Point(x:canvasWidth / 2,y:100),size:Size(width:360,height:630)),fillMode:.fillAndStroke)
+        let rect1 = Rectangle(rect:Rect(topLeft:Point(x:canvasWidth / 2,y:50),size:Size(width:360,height:630)),fillMode:.fillAndStroke)
         canvas.render(grayFillStyle,blackStrokeStyle,lineWidth,rect1)
         let silverFillStyle = FillStyle(color:Color(.silver))
         for y in 0 ..< 20
         {
             for x in 0 ..< 10
             {
-                let rect2 = Rectangle(rect:Rect(topLeft:Point(x:canvasWidth / 2 + 30 + x * 30,y:100 + y * 30),size:Size(width:30,height:30)),fillMode:.fillAndStroke)
+                let rect2 = Rectangle(rect:Rect(topLeft:Point(x:canvasWidth / 2 + 30 + x * 30,y:50 + y * 30),size:Size(width:30,height:30)),fillMode:.fillAndStroke)
                 canvas.render(silverFillStyle,rect2)
             }
         }
