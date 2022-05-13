@@ -34,7 +34,7 @@ class LockBlock: RenderableEntity,KeyDownHandler
                 y += 50
             }
             y -= 10
-            let textList2 = ["ArrowLeft -> Move the block to the left.","ArrowRight -> Move the block to the right.","SpaceBar -> Drop the block","Control-SpaceBar -> Restart the game"]
+            let textList2 = ["ArrowLeft -> Move the block to the left.","ArrowRight -> Move the block to the right.","Space -> Drop the block","Control-Space -> Restart the game"]
             for message in textList2
             {
                 let text = Text(location:Point(x:0,y:y),text:message)
@@ -61,8 +61,12 @@ class LockBlock: RenderableEntity,KeyDownHandler
             theEndText.location = Point(x:0,y:canvasHeight / 2 + canvasHeight / 3)
             theEndText.text = "OVER"
             canvas.render(theEndText)
-            let descriptionText = Text(location:Point(x:canvasWidth / 5 * 3 + 50,y:canvasHeight / 2 - canvasHeight / 12),text:"To start the")
+            let descriptionText = Text(location:Point(x:canvasWidth / 5 * 3 + 50,y:canvasHeight / 2 - canvasHeight / 6),text:"Score: \(score), FullLines: \(fullLines)")
+            descriptionText.font = "\(canvasHeight / 18)pt Arial Bold"
+            canvas.render(descriptionText)
             descriptionText.font = "\(canvasHeight / 12)pt Arial Bold"
+            descriptionText.location = Point(x:canvasWidth / 5 * 3 + 50,y:canvasHeight / 2 - canvasHeight / 12)
+            descriptionText.text = "To start the"
             canvas.render(descriptionText)
             descriptionText.location = Point(x:canvasWidth / 5 * 3 + 50,y:canvasHeight / 2)
             descriptionText.text = "Game again,"
@@ -151,7 +155,10 @@ class LockBlock: RenderableEntity,KeyDownHandler
         fillStyles.append(fillStyle)
         strokeStyles.append(strokeStyle)
         rectangles.append(rectangle)
-        score += 1
+        if !theEnd
+        {
+            score += 1
+        }
     }
     func isBottom(x:Int,y:Int) -> Bool
     {

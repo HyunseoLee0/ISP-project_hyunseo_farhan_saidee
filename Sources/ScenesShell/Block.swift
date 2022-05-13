@@ -5,7 +5,7 @@ class Block: RenderableEntity,KeyDownHandler
 {
     var canvasWidth = 1916
     var canvasHeight = 973
-    var blocks = ["I","J","L","O","S","T","Z","."]
+    var blocks = ["I","J","L","O","S","T","Z",".","."]
     //first, blockKind is "First" to show the process of making the board like curtain call.
     var blockKind = "First"
     var nextBlock: String
@@ -25,8 +25,8 @@ class Block: RenderableEntity,KeyDownHandler
         self.nextBlock = blocks.randomElement()!
         self.x = canvasWidth / 2 + side
         self.y = 50
-        self.nextX = 310
-        self.nextY = 270
+        self.nextX = canvasWidth / 2 - side * 5
+        self.nextY = 250
         // Using a meaningful name can be helpful for debugging
         super.init(name:"Button")
     }
@@ -325,6 +325,7 @@ class Block: RenderableEntity,KeyDownHandler
         let lineWidth = LineWidth(width:3)
         if !drawMainScreen
         {
+            nextX = canvasWidth / 2 - side * 5
             let xInfo = getInfo(kind:"X",next:true)
             let yInfo = getInfo(kind:"Y",next:true)
             //Draw the I block when the next block is this.
